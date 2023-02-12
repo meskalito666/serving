@@ -1,0 +1,133 @@
+version: '3.8'
+services:
+  serving:
+    image: tensorflow/serving:2.6.0
+    deploy:
+      replicas: 1
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./serving/models/use_l:/models/use_l
+    environment:
+      - MODEL_NAME=use_l
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: "exit 0"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  api_gateway:
+    image: 167.235.136.60:5000/api_gateway
+    deploy:
+      replicas: 2
+      placement:
+        constraints:
+          - "node.hostname==kcloud-production-user-521-vm-620"
+    build: api_gateway/
+    ports:
+      - 5020:5020
+    volumes:
+      - ./idxs:/idxs
+    environment:
+      - VERSION=idx_1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: "exit 0"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  emb_to_txt_0:
+    image: 167.235.136.60:5000/emb_to_txt
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - "node.hostname==kcloud-production-user-521-vm-620"
+    build: emb_to_txt/
+    ports:
+      - 6000:6000
+    volumes:
+      - ./idxs:/idxs
+    environment:
+      - CLUSTER_ID=0
+      - VERSION=idx_1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: "exit 0"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  emb_to_txt_1:
+    image: 167.235.136.60:5000/emb_to_txt
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - "node.hostname==kcloud-production-user-521-vm-620"
+    build: emb_to_txt/
+    ports:
+      - 6010:6000
+    volumes:
+      - ./idxs:/idxs
+    environment:
+      - CLUSTER_ID=1
+      - VERSION=idx_1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: "exit 0"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  emb_to_txt_2:
+    image: 167.235.136.60:5000/emb_to_txt
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - "node.hostname==kcloud-production-user-521-vm-620"
+    build: emb_to_txt/
+    ports:
+      - 6020:6000
+    volumes:
+      - ./idxs:/idxs
+    environment:
+      - CLUSTER_ID=2
+      - VERSION=idx_1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: "exit 0"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  emb_to_txt_3:
+    image: 167.235.136.60:5000/emb_to_txt
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - "node.hostname==kcloud-production-user-521-vm-620"
+    build: emb_to_txt/
+    ports:
+      - 6030:6000
+    volumes:
+      - ./idxs:/idxs
+    environment:
+      - CLUSTER_ID=3
+      - VERSION=idx_1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: "exit 0"
+      interval: 30s
+      timeout: 10s
+      retries: 3

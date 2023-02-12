@@ -1,0 +1,1 @@
+docker service rm service_api_gateway service_serving service_emb_to_txt_0 service_emb_to_txt_1 service_emb_to_txt_2 service_emb_to_txt_3

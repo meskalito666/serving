@@ -1,0 +1,2 @@
+wget https://tfhub.dev/google/universal-sentence-encoder-large/5?tf-hub-format=compressed -P /root/serving/serving/models/use_l/5 -O /root/serving/serving/models/use_l/5/model.tar \
+&& tar -xzf /root/serving/serving/models/use_l/5/model.tar -C /root/serving/serving/models/use_l/5
